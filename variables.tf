@@ -21,3 +21,6 @@ variable "project_name" {
 variable "ami_name_pattern" {
   type = string
 }
+variable "allowed_azs" {
+  type = list(string)
+}

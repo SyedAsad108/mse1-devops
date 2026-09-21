@@ -1,18 +1,27 @@
 provider "aws" {
   region = var.aws_region
 }
+
 data "aws_vpc" "default" {
   default = true
 }
+
 data "aws_subnets" "default" {
   filter {
     name   = "vpc-id"
     values = [data.aws_vpc.default.id]
   }
+
+  filter {
+    name   = "availability-zone"
+    values = var.allowed_azs
+  }
 }
+
 data "aws_availability_zones" "available" {
   state = "available"
 }
+
 data "aws_ami" "amazon_linux" {
   most_recent = true
 
@@ -33,6 +42,7 @@ data "aws_ami" "amazon_linux" {
     values = ["x86_64"]
   }
 }
+
 resource "aws_instance" "web" {
   count = var.instance_count
 
@@ -49,4 +59,3 @@ resource "aws_instance" "web" {
     Project     = var.project_name
   }
 }
-

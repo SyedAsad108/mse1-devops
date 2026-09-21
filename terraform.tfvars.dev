@@ -4,3 +4,7 @@ instance_count   = 1
 environment      = "dev"
 project_name     = "terraform-practical"
 ami_name_pattern = "al2023-ami-*-x86_64"
+allowed_azs = [
+  "ap-south-1a",
+  "ap-south-1b"
+]
