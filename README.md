@@ -182,7 +182,4 @@ terraform plan -var-file="terraform.tfvars.prod"
 
 
 
-## 👤 Author
-**Syed Asad**  
-DevOps Practical Examination Submission &bull; 5th Semester  
-Repository: [SyedAsad108/mse1-devops](https://github.com/SyedAsad108/mse1-devops)
+
