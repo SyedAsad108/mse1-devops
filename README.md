@@ -1,4 +1,4 @@
-# Terraform Multi-Environment setup
+# Terraform Multi-Environment Setup
 
 [![Terraform](https://img.shields.io/badge/Terraform-v1.15+-844FBA?logo=terraform&logoColor=white)](https://www.terraform.io/)
 [![AWS Provider](https://img.shields.io/badge/AWS%20Provider-v6.65+-FF9900?logo=amazon-aws&logoColor=white)](https://registry.terraform.io/providers/hashicorp/aws/latest)
