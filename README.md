@@ -180,54 +180,7 @@ terraform plan -var-file="terraform.tfvars.prod"
 
 ---
 
-## 📊 Evaluation Rubric & Checklist
 
-| Parameter | Exam Expectation | Project Implementation | Grade |
-| :--- | :--- | :--- | :--- |
-| **1. Workspaces** | 2 workspaces + isolated state | Isolated state in `terraform.tfstate.d/dev/` and `prod/` | **Excellent** |
-| **2. Variables** | 5+ meaningful variables, distinct `.tfvars` | 7 declared variables; separate `.tfvars` per environment | **Excellent** |
-| **3. Data Blocks** | 3+ data blocks, no hardcoding | 4 dynamic data blocks (`aws_vpc`, `aws_subnets`, `aws_availability_zones`, `aws_ami`) | **Excellent** |
-| **4. Code Quality** | Multiple resources, tagged | Uses `count`, modulo subnet distribution, and dynamic tags | **Excellent** |
-| **5. Env Config** | Dev cheap, Prod powerful | Dev: 1 × `t3.micro` (`ap-south-1`)<br>Prod: 3 × `t3.small` (`us-east-1`) | **Excellent** |
-
-### Verified Candidate Checklist
-- [x] Created 2 workspaces (`dev` & `prod`)
-- [x] Created `variables.tf` with 5+ variables (7 used)
-- [x] Created `terraform.tfvars.dev` & `terraform.tfvars.prod` with DIFFERENT values
-- [x] Used 3+ data blocks (4 active)
-- [x] No hardcoded AWS resource IDs in `main.tf`
-- [x] Dev uses smaller instance (`t3.micro`) than Prod (`t3.small`)
-- [x] Dev has 1 instance, Prod has 3 instances
-- [x] All resources have tags with environment name
-- [x] `terraform validate` passes with success
-- [x] Both workspaces verified with clean state (`No changes`)
-
----
-
-## 🎓 Viva Voce Study Notes
-
-1. **How do Terraform workspaces achieve state isolation?**
-   Workspaces use isolated state files stored in `terraform.tfstate.d/<workspace>/terraform.tfstate`. Changes in `dev` never affect `prod`.
-
-2. **Why use `-var-file` instead of renaming files to `terraform.tfvars`?**
-   Terraform auto-loads `terraform.tfvars`. Since we maintain two environments in the same directory, passing `-var-file="terraform.tfvars.<env>"` explicitly injects the corresponding configuration for the active workspace.
-
-3. **Why are Data Sources better than hardcoded IDs?**
-   AWS resource IDs (e.g., AMI, VPC, and Subnet IDs) are account- and region-specific. Data sources query the AWS API dynamically at runtime, making the configuration 100% portable across accounts and regions.
-
-4. **Why did `t3.small` fail in `us-east-1e`?**
-   Specific AWS data centers in older zones like `us-east-1e` do not support newer or specific instance families due to hardware constraints.
-
-5. **How does the modulo expression `count.index % length(...)` work?**
-   It implements a round-robin algorithm that distributes EC2 instances across all available subnets in alternating order to maximize physical availability.
-
-6. **What is the difference between `terraform validate` and `terraform plan`?**
-   `validate` checks syntax and HCL consistency locally without making network calls. `plan` authenticates against AWS, refreshes existing state, and calculates the exact diff needed to reach the desired state.
-
-7. **Why avoid `terraform destroy` when fixing partial failures?**
-   In production, destroying running resources causes service disruption and potential data loss. Because Terraform is declarative, we inspect the plan and apply a safe delta (`1 to add, 0 to change, 0 to destroy`).
-
----
 
 ## 👤 Author
 **Syed Asad**  
